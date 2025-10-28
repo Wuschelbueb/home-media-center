@@ -26,34 +26,31 @@ libraries:
     collection_files: &id001
     - default: imdb                # This is a file within Kometa's defaults folder
       template_variables:
-        sort_prefix: "01 - "                                    # this will prefix collection names with "02 - " to help with sorting
+        sort_prefix: ":::01"                                    # this will prefix collection names with "02 - " to help with sorting
     - default: tmdb
       template_variables:
-        sort_prefix: "02 - "                                    # this will prefix collection names with "02 - " to help with sorting
+        sort_prefix: ":::02"                                    # this will prefix collection names with "02 - " to help with sorting
     - default: oscars
       template_variables:
-        sort_prefix: "03 - "                                    # this will prefix collection names with "04 - " to help with sorting
-    - default: trakt
-      template_variables:
-        sort_prefix: "04 - "                                    # this will prefix collection names with "01 - " to help with sorting
+        sort_prefix: ":::03"
 
     overlay_files: &id002
       - default: ribbon
       - default: ratings                                                   # 5, 6, 7
         template_variables:
-          rating3: critic                                                    # 5 as this is user and mass_user_rating_update: mdb_tomatoes
-          rating3_image: imdb                                         # 5 as this is user and mass_user_rating_update: mdb_tomatoes
+          rating1: critic                                                    # 5 as this is user and mass_user_rating_update: mdb_tomatoes
+          rating1_image: imdb                                         # 5 as this is user and mass_user_rating_update: mdb_tomatoes
 
-          rating1: audience                                                  # 6 as this is critic and mass_critic_rating_update: imdb
-          rating1_image: tmdb                                              # 6 as this is critic and mass_critic_rating_update: imdb
+          rating2: audience                                                  # 6 as this is critic and mass_critic_rating_update: imdb
+          rating2_image: tmdb                                              # 6 as this is critic and mass_critic_rating_update: imdb
 
-          rating2: user                                                # 7 as this is audience and mass_audience_rating_update: tmdb
-          rating2_image: trakt                                              # 7 as this is audience and mass_audience_rating_update: tmdb
+          rating3: user                                                # 7 as this is audience and mass_audience_rating_update: tmdb
+          rating3_image: rt_tomato                                              # 7 as this is audience and mass_audience_rating_update: tmdb
 
           horizontal_position: right                                       # the set of ratings is on the right of the poster
 
     operations: &op001
-      mass_user_rating_update: mdb_trakt                                   # 5 This operation will update the user rating in plex with Rotten Tomatoes ratings information gathered through mdblist.com (mdblist config required)
+      mass_user_rating_update: mdb_tomatoes                                # 5 This operation will update the user rating in plex with Rotten Tomatoes ratings information gathered through mdblist.com (mdblist config required)
       mass_critic_rating_update: imdb                                      # 6 This operation will update the critic rating in plex with IMDb ratings information
       mass_audience_rating_update: tmdb                                    # 7 This operation will update the audience rating in plex with TMDb ratings information
 
@@ -68,9 +65,22 @@ libraries:
     collection_files:
     - default: tmdb               # This is a file within Kometa's defaults folder
     - default: imdb                # This is a file within Kometa's defaults folder
-                                  # see the wiki for how to use local files, folders, URLs, or files from git
-    overlay_files: *id002                                     # the set of ratings is on the right of the poster
-    operations: *op001
+
+    overlay_files:
+      - default: ratings                                                       # 3, 4
+        template_variables:
+          rating1: critic                                                  # 3 as this is critic and mass_critic_rating_update: imdb
+          rating1_image: imdb
+
+          rating2: audience                                                # 4 as this is audience and mass_audience_rating_update: tmdb
+          rating2_image: tmdb
+
+          horizontal_position: right                                       # the set of ratings is on the right of the poster
+          builder_level: episode
+
+    operations:
+      mass_episode_critic_rating_update: imdb                            # 3 This operation will update the episodes critic rating in plex with IMDb ratings information
+      mass_episode_audience_rating_update: tmdb   
 
 #  Anime:
 #    collection_files:
