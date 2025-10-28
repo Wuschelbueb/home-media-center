@@ -1,0 +1,29 @@
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    env_file:
+      - ../.env
+    environment:
+      - VERSION=docker
+    devices:
+      - /dev/dri:/dev/dri   # for hardware transcoding
+    volumes:
+      - ../plex/config:/config
+      - /mnt/synology-nas-media-files/english-movies:/english-movies
+      - /mnt/synology-nas-media-files/german-movies:/german-movies
+      - /mnt/synology-nas-media-files/tv-shows:/tv-shows
+      - /mnt/transcode:/transcode # local SSD for transcoding
+    restart: unless-stopped
+
+  kometa:
+    image: kometateam/kometa:latest
+    container_name: kometa
+    env_file:
+      - ../.env
+    volumes:
+      - ../kometa/config:/config       # Kometa config & logs
+      - ../plex/config:/plex_config    # Optional: if you want to access Plex data or logs
+    network_mode: host                # allows it to reach Plex easily
+    restart: unless-stopped
