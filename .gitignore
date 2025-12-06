@@ -1,0 +1,40 @@
+# Local secrets - NEVER commit
+.env
+
+# Plex - ignore everything except essential config
+plex/config/Library/Application Support/Plex Media Server/Cache/
+plex/config/Library/Application Support/Plex Media Server/Codecs/
+plex/config/Library/Application Support/Plex Media Server/Crash Reports/
+plex/config/Library/Application Support/Plex Media Server/Diagnostics/
+plex/config/Library/Application Support/Plex Media Server/Logs/
+
+# Plex sensitive files - contain tokens and auth info
+plex/config/Library/Application Support/Plex Media Server/
+
+# Plex media and transcode directories
+plex/media/
+plex/transcode/
+
+# Kometa logs and generated files
+kometa/config/logs/
+kometa/logs/
+kometa/config/UUID
+kometa/config/overlays
+kometa/config/config.cache
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Portainer data - sensitive keys and database
+portainer/
