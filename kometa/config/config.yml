@@ -21,63 +21,64 @@ tmdb:
 
                                    ## At least one library has to be configured for the script to do anything meaningful
 libraries:
-  "German Movies":                                                       # These are names of libraries in your Plex
+  German Movies:                                                         # These are names of libraries in your Plex
     remove_overlays: false                                               # Set this to true to remove all overlays
     collection_files: &id001
     - default: imdb                                                      # This is a file within Kometa's defaults folder
       template_variables:
-        sort_prefix: ":::01"                                             # this will prefix collection names with "02 - " to help with sorting
+        sort_prefix: :::01                                               # this will prefix collection names with "02 - " to help with sorting
     - default: tmdb
       template_variables:
-        sort_prefix: ":::02"                                             # this will prefix collection names with "02 - " to help with sorting
+        sort_prefix: :::02                                               # this will prefix collection names with "02 - " to help with sorting
     - default: oscars
       template_variables:
-        sort_prefix: ":::03"
+        sort_prefix: :::03
 
     overlay_files: &id002
-      - default: ribbon
-      - default: ratings                                                 # 5, 6, 7
-        template_variables: &rating_vars
-          rating1: critic                                                # 5 as this is user and mass_user_rating_update: mdb_tomatoes
-          rating1_image: imdb                                            # 5 as this is user and mass_user_rating_update: mdb_tomatoes
+    - default: ribbon
+    - default: ratings                                                   # 5, 6, 7
+      template_variables: &rating_vars
+        rating1: critic                                                  # 5 as this is user and mass_user_rating_update: mdb_tomatoes
+        rating1_image: imdb                                              # 5 as this is user and mass_user_rating_update: mdb_tomatoes
 
-          rating2: audience                                              # 6 as this is critic and mass_critic_rating_update: imdb
-          rating2_image: tmdb                                            # 6 as this is critic and mass_critic_rating_update: imdb
+        rating2: audience                                                # 6 as this is critic and mass_critic_rating_update: imdb
+        rating2_image: tmdb                                              # 6 as this is critic and mass_critic_rating_update: imdb
 
-          rating3: user                                                  # 7 as this is audience and mass_audience_rating_update: tmdb
-          rating3_image: rt_tomato                                       # 7 as this is audience and mass_audience_rating_update: tmdb
+        rating3: user                                                    # 7 as this is audience and mass_audience_rating_update: tmdb
+        rating3_image: rt_tomato                                         # 7 as this is audience and mass_audience_rating_update: tmdb
 
-          horizontal_position: right                                     # the set of ratings is on the right of the poster
+        horizontal_position: right                                       # the set of ratings is on the right of the poster
 
     operations: &op001
       mass_user_rating_update: mdb_tomatoes                              # 5 This operation will update the user rating in plex with Rotten Tomatoes ratings information gathered through mdblist.com (mdblist config required)
       mass_critic_rating_update: imdb                                    # 6 This operation will update the critic rating in plex with IMDb ratings information
       mass_audience_rating_update: tmdb                                  # 7 This operation will update the audience rating in plex with TMDb ratings information
 
-  "English Movies":                                                      # These are names of libraries in your Plex
+  English Movies:                                                        # These are names of libraries in your Plex
     remove_overlays: false                                               # Set this to true to remove all overlays
     collection_files: *id001
-    overlay_files: *id002                                                # the set of ratings is on the right of the poster
-    operations: *op001                                                   # 7 This operation will update the audience rating in plex with TMDb ratings information
+    overlay_files: *id002
+                                                                         # the set of ratings is on the right of the poster
+    operations: *op001
+                                                                         # 7 This operation will update the audience rating in plex with TMDb ratings information
 
-  "TV Shows":
+  TV Shows:
     remove_overlays: false                                               # Set this to true to remove all overlays
     collection_files:
     - default: tmdb                                                      # This is a file within Kometa's defaults folder
     - default: imdb                                                      # This is a file within Kometa's defaults folder
 
     overlay_files:
-      - default: ribbon
-        level: show
-      - default: ratings
-        template_variables: *rating_vars
-        level: show
-      - default: ratings
-        template_variables: *rating_vars
-        level: season
-      - default: ratings
-        template_variables: *rating_vars
-        level: episode
+    - default: ribbon
+      level: show
+    - default: ratings
+      template_variables: *rating_vars
+      level: show
+    - default: ratings
+      template_variables:
+        <<: *rating_vars
+        builder_level: episode
+      level: episode
 
     operations:
       mass_user_rating_update: mdb_tomatoes
@@ -92,9 +93,9 @@ libraries:
 #      - default: anilist                                                # This is a file within Kometa's defaults folder
 
 playlist_files:
-  - default: playlist                                                    # This is a file within Kometa's defaults folder
-    template_variables:
-      libraries: Movies, TV Shows                                        # list of libraries that you want the Kometa Defaults playlists to look at
+- default: playlist                                                      # This is a file within Kometa's defaults folder
+  template_variables:
+    libraries: Movies, TV Shows                                          # list of libraries that you want the Kometa Defaults playlists to look at
 
 settings:
   run_order:
@@ -143,6 +144,7 @@ settings:
   overlay_artwork_filetype: webp_lossy
   overlay_artwork_quality: 90
 
+  run_again_delay: 0
 webhooks:                                                                # Can be individually specified per library as well
   changes:
   delete:
